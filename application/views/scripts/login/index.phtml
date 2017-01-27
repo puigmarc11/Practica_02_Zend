@@ -1,0 +1,13 @@
+
+<?php echo $this->headLink()->appendStylesheet('css/estil.css'); ?>
+
+
+<form name="f1" method="post" action="<?php echo $this->url(array("controller" => "Login", "action" => "index")); ?>" >
+    NOM:<br>
+    <input type="text" name="nom"><br>
+    PASSWORD<br>
+    <input type="password" name="password"><br>
+    <input type="submit" name="enviar" value="Login" class="btn btn-primary">
+</form>
+
+<p>dsdsds</p>
