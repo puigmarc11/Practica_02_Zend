@@ -10,12 +10,14 @@ class LoginController extends Zend_Controller_Action {
         
         if ($this->getRequest()->isPost()) {
           
-            var_dump("Connexio");
-            
             $dadesLogin = $this->getRequest()->getPost();
             
-            var_dump($dadesLogin["nom"]);
-            var_dump($dadesLogin["password"]);
+            $nom = $dadesLogin["nom"];
+            $pass = $dadesLogin["password"];
+            
+            if($nom == "admin" && $pass == "admin"){
+                $this->redirect("Administrador/index");
+            }
             
           
         } else {
