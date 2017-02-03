@@ -1,29 +1,58 @@
-<div>
 
-    <h1>Administrador</h1>
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-xs-10">
+
+            <h1>Administrador</h1>
+
+            <form class="form" enctype="multipart/form-data" action="<?php echo $this->url(array("controller" => "Administrador", "action" => "index")); ?>" method="POST">
+                <input type="hidden" name="MAX_FILE_SIZE" value="100000" class=""/>
+                Choose a file to upload: 
+                <input name="uploadedfile" type="file" class=""/>
+                <br />
+                <input type="submit" value="Upload File" class="btn btn-primary"/>
+            </form>
+
+        </div>
+
+        <div class="col-xs-12">
 
 
-    <form enctype="multipart/form-data" action="<?php echo $this->url(array("controller" => "Administrador", "action" => "index")); ?>" method="POST">
-        <input type="hidden" name="MAX_FILE_SIZE" value="100000" />
-        Choose a file to upload: <input name="uploadedfile" type="file" />
-        <br />
-        <input type="submit" value="Upload File" />
-    </form>
+            <?php
+            if (isset($this->alumnes)) {
+                ?> 
 
-    <?php
-    if (isset($this->alumnes)) {
-    
-        foreach ($this->alumnes as $a){
-            
-            foreach($a as $aa){
-                  echo $aa . " - ";
+                <table class="table table-bordered table-striped">
+
+                    <tr>
+                        <th>DNI</th>
+                        <th>PASSWORD</th>
+                        <th>NOM</th>
+                        <th>CORREU</th>
+                    </tr>
+
+                    <?php
+                    foreach ($this->alumnes as $a) {
+
+                        echo "<tr>";
+
+                        foreach ($a as $aa) {
+                            echo "<td>$aa</td>";
+                        }
+
+                        echo "</tr>";
+                    }
+                    ?> 
+                </table>
+
+                <?php
             }
-            
-            echo "<br>";
-          
-        }
-        
-    }
-    ?>
+            ?>
+
+        </div>
+
+    </div>
 
 </div>

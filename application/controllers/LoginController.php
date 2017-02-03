@@ -18,11 +18,9 @@ class LoginController extends Zend_Controller_Action {
             if($nom == "admin" && $pass == "admin"){
                 $this->redirect("Administrador/index");
             }
-            
-          
-        } else {
-            echo "this is not the post request";
-        }
+        } 
+       
+        
         
     }
 
