@@ -17,6 +17,11 @@
         <controllerFile controllerName="Administrador">
           <actionMethod actionName="index"/>
         </controllerFile>
+        <controllerFile controllerName="Festa">
+          <actionMethod actionName="index"/>
+          <actionMethod actionName="crearfesta"/>
+          <actionMethod actionName="llistarparticipants"/>
+        </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
       <layoutsDirectory>
@@ -24,7 +29,14 @@
           <layoutScriptFile layoutName="layout"/>
         </layoutScriptsDirectory>
       </layoutsDirectory>
-      <modelsDirectory/>
+      <modelsDirectory>
+        <dbTableDirectory>
+          <dbTableFile dbTableName="Alumnes"/>
+          <dbTableFile dbTableName="Festa"/>
+          <dbTableFile dbTableName="Organitzadors"/>
+          <dbTableFile dbTableName="Participant"/>
+        </dbTableDirectory>
+      </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
       <viewsDirectory>
@@ -40,6 +52,15 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Administrador">
             <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Festa">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Festa">
+            <viewScriptFile forActionName="crearfesta"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Festa">
+            <viewScriptFile forActionName="llistarparticipants"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

@@ -1,0 +1,67 @@
+<div class="container">
+    <div class="row">
+        <div col-xs-12>
+            <h1 class="text-center">Organitzar nova festa</h1>
+        </div>
+        <div class="col-xs-12">
+            <form class="form-horizontal" action="<?php echo $this->url(array("controller" => "Festa", "action" => "crearfesta")); ?>" method="POST">
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="lloc">Lloc</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="lloc" name="lloc" placeholder="Lloc">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="datetimepicker">Data:</label>
+                    <div class="col-sm-10"> 
+                        <input type="text" class="form-control" id="datetimepicker" name="data" placeholder="Data">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-sm-2" for="organitzadors">Organitzadors:</label>
+                    <div class="col-sm-10"> 
+                        <select class="selectpicker  show-menu-arrow form-control" data-live-search="true" name="organitzadors[]" id="organitzadors" multiple>
+                            <?php
+                            foreach ($this->alumnes as $a) {
+                                ?><option data-subtext="<?php echo $a->dni ?>" value="<?php echo $a->dni ?>"><?php echo $a->nom ?></option> <?php
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <div class="checkbox">
+                            <label><input type="checkbox">Notificar E-mail</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group"> 
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Crear festa</button>
+                    </div>
+                </div>
+            </form>
+            <script>
+                jQuery('#datetimepicker').datetimepicker();
+            </script>
+
+            <?php if ($this->resultat == 1) { ?>
+                <div class = "col-sm-offset-2 col-sm-10 alert alert-success">
+                    <strong>Success!</strong> Festa creada correctament.
+                </div>
+
+            <?php } else if($this->resultat == 0) { ?>
+                <div class = "col-sm-offset-2 col-sm-10 alert alert-danger">
+                    <strong>Error!</strong> Error en organitzar la festa.
+                </div>
+
+            <?php }
+            ?>
+
+
+        </div>
+    </div>
+</div>
+
+

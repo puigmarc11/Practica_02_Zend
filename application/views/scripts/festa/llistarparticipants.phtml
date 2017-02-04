@@ -1,0 +1,50 @@
+<style>
+
+    th, td {
+        text-align: center;
+    }
+
+</style>
+<div class="container">
+
+    <div class="row">
+
+        <div class="col-xs-12">
+
+            <h1>Festa <?php echo $this->id; ?></h1>
+
+            <table class="table table-bordered table-striped table-hover">
+
+                <tr>
+                    <th>DNI</th>
+                    <th>NOM</th>
+                    <th>Email</th>
+                    <th>CONFIRMAT</th>
+                </tr>
+
+                <?php
+                foreach ($this->participant as $part) {
+
+                    echo "<tr>";
+                    echo "<td>" . $part['dni'] . "</td>";
+                    echo "<td>" . $part['nom'] . "</td>";
+                    echo "<td>" . $part['correu'] . "</td>";
+                    if ($part['acceptat']) {
+                        ?>
+                <td><i class="fa fa-check" aria-hidden="true" style="color: green"></i></td>
+                        <?php
+                    } else {
+                        ?>
+                        <td><i class="fa fa-times" aria-hidden="true" style="color: red"></i></td>
+                            <?php
+                        }
+                        echo "</tr>";
+                    }
+                    ?>
+
+            </table>
+
+        </div>
+    </div>
+
+</div>
