@@ -23,7 +23,7 @@
                         <select class="selectpicker  show-menu-arrow form-control" data-live-search="true" name="organitzadors[]" id="organitzadors" multiple>
                             <?php
                             foreach ($this->alumnes as $a) {
-                                ?><option data-subtext="<?php echo $a->dni ?>" value="<?php echo $a->dni ?>"><?php echo $a->nom ?></option> <?php
+                                ?><option data-subtext="<?php echo "Cumpleanys: " . $a->cumpleanys ?>" value="<?php echo $a->dni ?>"><?php echo $a->nom ?></option> <?php
                             }
                             ?>
                         </select>
@@ -32,7 +32,7 @@
                 <div class="form-group"> 
                     <div class="col-sm-offset-2 col-sm-10">
                         <div class="checkbox">
-                            <label><input type="checkbox">Notificar E-mail</label>
+                            <label><input type="checkbox" name="notificar">Notificar E-mail</label>
                         </div>
                     </div>
                 </div>

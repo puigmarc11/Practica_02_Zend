@@ -29,7 +29,7 @@
                     echo "<td>" . $festa[0]['lloc'] . "</td><td>" . $festa[0]['data'] . "</td>";
                     echo "<td>";
                     foreach ($festa[1] as $o) {
-                        echo $o->id_organitzador . ", ";
+                        echo $o['nom'] . ", ";
                     }
                     echo "</td>";
                     ?>
@@ -55,8 +55,8 @@
                     <th>Lloc</th>
                     <th>Data</th>
                     <th>Organitzadors</th>
-                    <th> --- </th>
-                    <th> --- </th>
+                    <th> Estat </th>
+                    <th> Acceptar/Anular Inv.</th>
                 </tr>
 
                 <?php

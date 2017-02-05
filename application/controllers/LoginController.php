@@ -22,7 +22,7 @@ class LoginController extends Zend_Controller_Action {
             $pass = $dadesLogin["password"];
 
             if ($nom == "admin" && $pass == "admin") {
-                $sessions->usuari = 'Admin';
+                $sessions->usuari = 'admin';
                 $sessions->setExpirationSeconds(3600, 'usuari');
                 $this->redirect("Administrador/index");
                 exit();

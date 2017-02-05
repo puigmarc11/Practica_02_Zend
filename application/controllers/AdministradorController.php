@@ -4,6 +4,11 @@ class AdministradorController extends Zend_Controller_Action {
 
     public function init() {
         /* Initialize action controller here */
+        $sessions = new Zend_Session_Namespace('expireAll');
+
+        if ($sessions->usuari != "admin") {
+            $this->redirect("Login/index");
+        }
     }
 
     public function indexAction() {
@@ -16,13 +21,13 @@ class AdministradorController extends Zend_Controller_Action {
 
             $adapter = new Zend_File_Transfer_Adapter_Http();
 
-            $adapter->setDestination(APPLICATION_PATH."/public");
+            $adapter->setDestination(APPLICATION_PATH . "/public");
 
             if (!$adapter->receive()) {
                 $messages = $adapter->getMessages();
             }
 
-            $csv = array_map('str_getcsv', file(APPLICATION_PATH.'\public\alumnes.csv'));
+            $csv = array_map('str_getcsv', file(APPLICATION_PATH . '\public\alumnes.csv'));
 
             foreach ($csv as $alumne) {
 
@@ -42,7 +47,7 @@ class AdministradorController extends Zend_Controller_Action {
                 }
             }
         }
-        
+
         $this->_helper->layout()->usuari = "Administrador";
         $this->view->alumnes = $alumnes->fetchAll();
     }
