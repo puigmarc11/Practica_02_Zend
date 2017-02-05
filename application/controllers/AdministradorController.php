@@ -31,6 +31,7 @@ class AdministradorController extends Zend_Controller_Action {
                     "password" => $alumne[1],
                     "nom" => $alumne[2],
                     "correu" => $alumne[3],
+                    "cumpleanys" => $alumne[4],
                 );
 
                 try {

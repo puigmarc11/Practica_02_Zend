@@ -21,6 +21,7 @@
           <actionMethod actionName="index"/>
           <actionMethod actionName="crearfesta"/>
           <actionMethod actionName="llistarparticipants"/>
+          <actionMethod actionName="acceptar"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory enabled="false"/>
@@ -61,6 +62,9 @@
           </viewControllerScriptsDirectory>
           <viewControllerScriptsDirectory forControllerName="Festa">
             <viewScriptFile forActionName="llistarparticipants"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Festa">
+            <viewScriptFile forActionName="acceptar"/>
           </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>

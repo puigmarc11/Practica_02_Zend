@@ -56,7 +56,28 @@
                     <th>Data</th>
                     <th>Organitzadors</th>
                     <th> --- </th>
+                    <th> --- </th>
                 </tr>
+
+                <?php
+                foreach ($this->festesParticipant as $festa) {
+                    ?>
+                    <tr>
+                        <td><?php echo $festa['lloc']; ?></td>
+                        <td><?php echo $festa['data']; ?></td>
+                        <td><?php ?></td>
+                        <?php if ($festa['acceptat']) { ?>
+                            <td><i class="fa fa-check" aria-hidden="true" style="color: green"></i></td>
+                            <td><a href="<?php echo $this->url(array("controller" => "Festa", "action" => "acceptar", "id" => $festa['id'], "estat" => "0")); ?>">Anular inivitacio</a></td>
+                        <?php } else { ?>
+                            <td><i class="fa fa-times" aria-hidden="true" style="color: red"></i></td>
+                            <td><a href="<?php echo $this->url(array("controller" => "Festa", "action" => "acceptar", "id" => $festa['id'], "estat" => "1")); ?>">Acceptar inivitacio</a></td>
+                        <?php } ?>
+                    </tr>
+
+                    <?php
+                }
+                ?>
 
             </table>
 

@@ -22,10 +22,12 @@
             <?php
             $sessions = new Zend_Session_Namespace('expireAll');
             ?>
-            <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-user"></span><?php echo "  ".$sessions->usuari . $this->layout()->usuari; ?></a>
+            <a class="navbar-brand" href="#"><span class="glyphicon glyphicon-user"></span><?php echo "  ".$sessions->usuari; ?></a>
         </div>
         <ul class="nav navbar-nav">
-            <li class=""><a href="<?php echo $this->url(array("controller" => "Festa", "action" => "index")); ?>">Home</a></li>
+            <?php if($sessions->usuari != "Admin") {?>
+            <li class=""><a href="<?php echo $this->url(array("controller" => "Festa", "action" => "index")); ?>">FESTES</a></li>
+            <?php } ?>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a href="<?php echo $this->url(array("controller" => "Login", "action" => "index")); ?>"><span class="glyphicon glyphicon-log-out"></span> Sortir</a></li>

@@ -18,11 +18,13 @@ class FestaController extends Zend_Controller_Action {
 
          */
 
-        $organitzador = "77123374G";
+        $sessions = new Zend_Session_Namespace('expireAll');
+
+        $organitzador = $sessions->usuari;
         $dbAdapter = Zend_Db_Table::getDefaultAdapter();
 
         $sql = $dbAdapter->select()
-                ->from("festa as f", array('lloc', 'data','id'))
+                ->from("festa as f", array('lloc', 'data', 'id'))
                 ->join('organitzadors as o', 'f.id = o.id_festa', array("id_organitzador", "id_festa"))
                 ->where('o.id_organitzador = ?', $organitzador);
 
@@ -40,8 +42,22 @@ class FestaController extends Zend_Controller_Action {
             );
         }
 
-
         $this->view->festesOrganitzador = $festes;
+
+        $dataAvui = date("Y-m-d");
+        $dni = $sessions->usuari;
+
+        $sql = $dbAdapter->select()
+                ->from("festa as f", array('lloc', 'data', 'id'))
+                ->join('organitzadors as o', 'f.id = o.id_festa', array("id_organitzador", "id_festa"))
+                ->join('participant as p', 'f.id = p.id_festa', array("acceptat"))
+                ->where("? NOT IN (select id_organitzador from organitzadors where id_festa = f.id)", $dni)
+                ->where("f.data >= ?", $dataAvui)
+                ->where("p.id_participant = ?", $dni);
+
+        $fp = $dbAdapter->fetchAll($sql);
+
+        $this->view->festesParticipant = $fp;
     }
 
     public function crearfestaAction() {
@@ -87,6 +103,7 @@ class FestaController extends Zend_Controller_Action {
 
                     //asignar participants
                     foreach ($alumnes->fetchAll() as $alumne) {
+
                         $part = array(
                             "id_festa" => $id,
                             "id_participant" => $alumne->dni,
@@ -94,6 +111,9 @@ class FestaController extends Zend_Controller_Action {
                         );
 
                         $participant->insert($part);
+                        
+                        $this->enviarCorreu($alumne->correu);
+                        
                     }
                 } else {
                     $resultat = 0;
@@ -116,12 +136,61 @@ class FestaController extends Zend_Controller_Action {
 
         $sql = $dbAdapter->select()
                 ->from("participant as p", array('acceptat'))
-                ->join('alumnes as a', 'p.id_participant = a.dni', array("dni","nom","correu"))
+                ->join('alumnes as a', 'p.id_participant = a.dni', array("dni", "nom", "correu"))
                 ->where('p.id_festa = ?', $id);
 
         $result = $dbAdapter->fetchAll($sql);
         $this->view->participant = $result;
-                
+    }
+
+    public function acceptarAction() {
+
+        $sessions = new Zend_Session_Namespace('expireAll');
+
+        $id = $this->getRequest()->getParam('id');
+        $estat = $this->getRequest()->getParam('estat');
+
+        var_dump($estat);
+
+
+        $part = new Application_Model_DbTable_Participant();
+
+        $where['id_festa = ?'] = $id;
+        $where['id_participant = ?'] = $sessions->usuari;
+
+        $update = array(
+            "acceptat" => $estat,
+        );
+
+        $part->update($update, $where);
+
+        $this->redirect("festa/index");
+    }
+
+    public function enviarCorreu($to) {
+
+        $subject = "Invitació a la festa d'aniversari";
+        $body = "Has estat invitat a la festa d'aniversari!!!!<br>"
+                . "El seguent enllaç serveix per confirmar l'esdeveniment.<br>"
+                . "<a href=''>Confirmar festa aniversari</a>";
+        
+        $config = array(
+            'ssl' => 'tls',
+            'port' => 587,
+            'auth' => 'login',
+            'username' => 'w2.mpuig@gmail.com',
+            'password' => 'infomila.info',
+        );
+        $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
+        Zend_Mail::setDefaultTransport($transport);
+
+
+        $mail = new Zend_Mail();
+        $mail->addTo($to,'')
+                ->setFrom('w2.mpuig@gmail.com', 'Organitzador festes')
+                ->setSubject($subject)
+                ->setBodyHtml($body)
+                ->send();
     }
 
 }

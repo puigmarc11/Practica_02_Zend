@@ -47,25 +47,4 @@ class LoginController extends Zend_Controller_Action {
         }
     }
 
-    public function enviarCorreu() {
-
-        $config = array(
-            'ssl' => 'tls',
-            'port' => 587,
-            'auth' => 'login',
-            'username' => 'w2.mpuig@gmail.com',
-            'password' => 'infomila.info',
-        );
-        $transport = new Zend_Mail_Transport_Smtp('smtp.gmail.com', $config);
-        Zend_Mail::setDefaultTransport($transport);
-
-
-        $mail = new Zend_Mail();
-        $mail->addTo('marcpuig123@gmail.com', 'Marc')
-                ->setFrom('w2.mpuig@gmail.com', 'Myself')
-                ->setSubject('My Subject')
-                ->setBodyHtml('Email Body')
-                ->send();
-    }
-
 }
