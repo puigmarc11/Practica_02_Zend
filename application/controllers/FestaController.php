@@ -4,10 +4,18 @@ class FestaController extends Zend_Controller_Action {
 
     public function init() {
         /* Initialize action controller here */
+
         $sessions = new Zend_Session_Namespace('expireAll');
 
+        $codi = $this->getRequest()->getParam('codi');
+
         if (!isset($sessions->usuari)) {
-            $this->redirect("Login/index");
+
+            if (isset($codi)) {
+                
+            } else {
+                $this->redirect("Login/index");
+            }
         }
     }
 
@@ -32,8 +40,6 @@ class FestaController extends Zend_Controller_Action {
                 ->from("festa as f", array('lloc', 'data', 'id'))
                 ->join('organitzadors as o', 'f.id = o.id_festa', array("id_organitzador", "id_festa"))
                 ->where('o.id_organitzador = ?', $organitzador);
-
-
 
 
         $result = $dbAdapter->fetchAll($sql);
@@ -88,6 +94,8 @@ class FestaController extends Zend_Controller_Action {
             $dataFesta = new DateTime($dades["data"]);
             $dataAvui = new DateTime("now");
 
+            $llocFesta = $dades["lloc"];
+
             if ($dataFesta > $dataAvui && $dades["lloc"] != "") {
 
                 $festa = new Application_Model_DbTable_Festa();
@@ -140,7 +148,8 @@ class FestaController extends Zend_Controller_Action {
                         $participant->insert($part);
 
                         if (isset($dades["notificar"]) && $alumne->correu != "") {
-                            $this->enviarCorreu($alumne->correu);
+                            $this->enviarCorreu($alumne->correu, $dataFesta, $llocFesta, $alumne->codi_seguretat);
+                            echo $alumne->codi_seguretat;
                         }
                     }
 
@@ -158,7 +167,7 @@ class FestaController extends Zend_Controller_Action {
                             $participant->update($update, $where);
                         }
                     }
-                    
+
                     $where['id_festa = ?'] = $id;
                     $where['id_participant = ?'] = $sessions->usuari;
 
@@ -167,7 +176,6 @@ class FestaController extends Zend_Controller_Action {
                     );
 
                     $participant->update($update, $where);
-                    
                 } else {
                     $resultat = 0;
                 }
@@ -220,12 +228,16 @@ class FestaController extends Zend_Controller_Action {
         $this->redirect("festa/index");
     }
 
-    public function enviarCorreu($to) {
+    public function enviarCorreu($to, $data, $lloc, $codi) {
 
         $subject = "Invitacio a la festa d'aniversari";
+
         $body = "Has estat invitat a la festa d'aniversari!!!!<br>"
+                . "Lloc de la festa: " . $lloc . "<br>"
+                . "Data de la festa: " . date_format($data, 'Y-m-d H:i:s') . "<br>"
                 . "El seguent enllac serveix per confirmar l'esdeveniment.<br>"
-                . "<a href=''>Confirmar festa aniversari</a>";
+                . "Codi: " . $codi . ""
+                . "<a href='http://localhost/PracticaZend/public/Festa/acceptarpermail/codi/" . $codi . "'>Confirmar festa aniversari</a>";
 
         $config = array(
             'ssl' => 'tls',
@@ -244,6 +256,27 @@ class FestaController extends Zend_Controller_Action {
                 ->setSubject($subject)
                 ->setBodyHtml($body)
                 ->send();
+    }
+
+    public function acceptarpermailAction() {
+
+        $codi = $this->getRequest()->getParam('codi');
+        $alumnes = new Application_Model_DbTable_Alumnes();
+
+        $a = $alumnes->fetchAll(array("codi_seguretat = ?" => $codi));
+
+        if (count($a) == 0) {
+            $this->redirect("Login/index");
+            exit;
+        } else {
+
+            $sessions = new Zend_Session_Namespace('expireAll');
+            $sessions->usuari = $a[0]->dni;
+
+            $this->redirect("Festa/index");
+        }
+
+        //http://localhost/PracticaZend/public/Festa/acceptarpermail/codi/aa713fa341f6786c39b587498449a999
     }
 
 }

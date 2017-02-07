@@ -37,7 +37,9 @@ class AdministradorController extends Zend_Controller_Action {
                     "nom" => $alumne[2],
                     "correu" => $alumne[3],
                     "cumpleanys" => $alumne[4],
+                    "codi_seguretat" => md5(rand()),
                 );
+
 
                 try {
                     $alumnes->insert($data);
